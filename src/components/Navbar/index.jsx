@@ -1,22 +1,33 @@
-import React from 'react';
+// src/components/Navbar.jsx
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+  const location = useLocation();
+
   return (
-    <nav className="flex items-center justify-between bg-blue-500 p-4 text-white">
-      <div className="flex items-center">
-        <img src="logo.png" alt="Logo" className="mr-4" />
-        <ul className="flex space-x-4">
-          <li><a href="/">Beranda</a></li>
-          <li><a href="/profil">Profil</a></li>
-          <li><a href="/pesan">Pesan</a></li>
-          {/* ... Tambahkan tautan menu lainnya sesuai kebutuhan */}
-        </ul>
-      </div>
-      <div className="flex items-center">
-        <input type="text" placeholder="Cari..." className="mr-4 p-2 rounded" />
-        {/* ... Tambahkan ikon pesan, pemberitahuan, dll. */}
+    <nav className="bg-black p-4 text-white">
+      <div className="container mx-auto flex justify-between items-center">
+        <Link to="/" className="text-2xl font-bold">
+          TiketEvent
+        </Link>
+        <div className="flex space-x-4">
+          <NavLink to="/" label="Home" currentPath={location.pathname} />
+          <NavLink to="/about" label="About" currentPath={location.pathname} />
+          <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
+        </div>
       </div>
     </nav>
+  );
+};
+
+const NavLink = ({ to, label, currentPath }) => {
+  const isActive = currentPath === to;
+
+  return (
+    <Link to={to} className={`hover:text-gray-300 ${isActive ? "text-gray-300" : ""}`}>
+      {label}
+    </Link>
   );
 };
 

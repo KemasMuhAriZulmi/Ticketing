@@ -1,23 +1,26 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const pageNumbers = [...Array(totalPages).keys()].map(num => num + 1);
+const Pagination = ({ currentPage, totalPages }) => {
+  const generatePages = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <Link
+          key={i}
+          to={`/events?page=${i}`}
+          className={`px-4 py-2 mr-2 border rounded-md ${
+            currentPage === i ? "bg-blue-500 text-white" : ""
+          }`}
+        >
+          {i}
+        </Link>
+      );
+    }
+    return pages;
+  };
 
-  return (
-    <nav className="flex justify-center mt-4">
-      <ul className="flex">
-        {pageNumbers.map(page => (
-          <li
-            key={page}
-            className={`mx-1 px-3 py-2 rounded cursor-pointer ${currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-            onClick={() => onPageChange(page)}
-          >
-            {page}
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
+  return <div className="mt-8">{generatePages()}</div>;
 };
 
 export default Pagination;
