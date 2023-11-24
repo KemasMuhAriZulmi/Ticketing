@@ -1,6 +1,39 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonRegister from "../components/Button-Register";
+import { useState } from "react";
 const ChangePass = () => {
+  const navigate = useNavigate();
+  const [isEmail, setInEmail] = useState("");
+  const onHandleClick = async () => {
+    try {
+      console.log(isNewPass, isConfirmNewPass);
+
+      if (isNewPass && isConfirmNewPass) {
+        const response = await axios.post(
+          "http://localhost:4500/user/sentmail",
+          {
+            email: isEmail,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${paramsToken}`,
+            },
+          }
+        );
+
+        if (response) {
+          alert("check your email");
+          navigate("/user-information");
+        } else {
+          setNewPass("");
+          setConfirmNewPass("");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="mx-auto">
       <div className="w-[600px] h-[400px] flex flex-col justify-center">
@@ -18,6 +51,7 @@ const ChangePass = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-sky-500"
               type="text"
               placeholder="email"
+              onChange={(e) => setInEmail(e.target.value)}
             ></input>
           </div>
           <div className="py-2">
@@ -28,6 +62,7 @@ const ChangePass = () => {
               Back to dashboard?{" "}
               <Link
                 to="/user-information"
+                onClick={onHandleClick}
                 className=" text-blue-600 hover:text-slate-700 cursor-pointer"
               >
                 Click me!

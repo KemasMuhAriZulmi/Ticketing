@@ -36,7 +36,8 @@ const ResetPass = () => {
           }
         );
 
-        if (response.data.success === true) {
+        if (response) {
+          alert("SUCCESS");
           navigate("/user-information");
         } else {
           setNewPass("");
