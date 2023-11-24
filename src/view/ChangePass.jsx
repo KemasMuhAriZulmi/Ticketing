@@ -1,33 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import ButtonRegister from "../components/Button-Register";
 import { useState } from "react";
+import axios from "axios";
 const ChangePass = () => {
   const navigate = useNavigate();
   const [isEmail, setInEmail] = useState("");
   const onHandleClick = async () => {
+    console.log(isEmail);
     try {
-      console.log(isNewPass, isConfirmNewPass);
-
-      if (isNewPass && isConfirmNewPass) {
-        const response = await axios.post(
-          "http://localhost:4500/user/sentmail",
-          {
-            email: isEmail,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${paramsToken}`,
-            },
-          }
-        );
-
-        if (response) {
-          alert("check your email");
-          navigate("/user-information");
-        } else {
-          setNewPass("");
-          setConfirmNewPass("");
+      const response = await axios.post(
+        "http://localhost:4500/user/sentemail",
+        {
+          email: isEmail,
         }
+      );
+      if (response) {
+        alert("check your email");
+        navigate("/login-user");
+      } else {
+        setNewPass("");
+        setConfirmNewPass("");
       }
     } catch (error) {
       console.log(error);
@@ -55,14 +47,13 @@ const ChangePass = () => {
             ></input>
           </div>
           <div className="py-2">
-            <ButtonRegister title="Submit" />
+            <ButtonRegister title="Submit" onClick={onHandleClick} />
           </div>
           <div className="text-center pt-10">
             <p className="text-[14px">
               Back to dashboard?{" "}
               <Link
                 to="/user-information"
-                onClick={onHandleClick}
                 className=" text-blue-600 hover:text-slate-700 cursor-pointer"
               >
                 Click me!
