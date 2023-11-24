@@ -10,7 +10,9 @@ const ResetPass = () => {
 
   const onHandleClick = async () => {
     const urlParams = new URLSearchParams(window.location.search);
+    console.log(urlParams);
     const paramsToken = urlParams.get("token");
+    console.log(paramsToken);
 
     if (!paramsToken) {
       navigate("/login-user");
