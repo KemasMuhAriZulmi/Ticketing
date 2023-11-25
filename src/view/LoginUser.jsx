@@ -5,12 +5,23 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Toast from "../components/Alert";
 
 const LoginUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [inError, setError] = useState("");
   const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
 
   const onLogin = async () => {
     console.log("MASUK");
@@ -30,8 +41,7 @@ const LoginUser = () => {
       }
     } catch (error) {
       console.error("An error occurred:", error);
-      setError("An error occurred. Please try again.");
-      alert(inError);
+      showToast("error", "Email or Password invalid.");
     }
   };
 
@@ -82,6 +92,13 @@ const LoginUser = () => {
           Forgot Password!
         </Link>
       </div>
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

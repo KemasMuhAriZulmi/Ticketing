@@ -1,25 +1,40 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ButtonRegister from "../components/Button-Register";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Toast from "../components/Alert";
 
 const InputPass = () => {
   const navigate = useNavigate();
   const [isCurrentPass, setInCurrentPass] = useState("");
   const [isNewPass, setInNewPass] = useState("");
   const [isConfirmNewPass, setInConfirmNewPass] = useState("");
+  const [toast, setToast] = useState(null);
+
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
 
   const onHandleClick = async () => {
+    if (!isCurrentPass || !isNewPass || !isConfirmNewPass) {
+      showToast("error", "Please fill in all fields");
+    }
+    if (isNewPass !== isConfirmNewPass) {
+      showToast("error", "New Password must be confirmed by Confirm Password");
+    }
     const token = localStorage.getItem("login");
 
     if (!token) {
       navigate("/login-user");
     }
+
     try {
-      console.log(isCurrentPass, isNewPass, isConfirmNewPass);
-      if ((isCurrentPass, isNewPass, isConfirmNewPass)) {
+      if (isCurrentPass && isNewPass && isConfirmNewPass) {
         const response = await axios.post(
-          "http://localhost:4500/user/update-password",
+          "http://localhost:4500/user/updatepassword",
           {
             currentPassword: isCurrentPass,
             newPassword: isNewPass,
@@ -31,18 +46,22 @@ const InputPass = () => {
             },
           }
         );
+
         if (response.data.success === true) {
-          navigate("/user-information");
-        } else {
+          showToast("success", "Password Updated");
+          // Reset the form fields
           setInCurrentPass("");
           setInNewPass("");
           setInConfirmNewPass("");
+        } else {
+          showToast("error", "Failed to update password");
         }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="mx-auto">
       <div className="w-[600px] h-[400px] flex flex-col justify-center">
@@ -80,19 +99,15 @@ const InputPass = () => {
           <div className="py-2">
             <ButtonRegister title="Submit" onClick={onHandleClick} />
           </div>
-          <div className="text-center pt-10">
-            <p className="text-[14px">
-              Forgot Password?{" "}
-              <Link
-                to="/change-password"
-                className=" text-blue-600 hover:text-slate-700 cursor-pointer"
-              >
-                Click me!
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

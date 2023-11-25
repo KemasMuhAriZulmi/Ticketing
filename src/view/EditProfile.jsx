@@ -18,6 +18,9 @@ const EditProfile = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [toast, setToast] = useState(null);
 
+  const emailValid = email.includes("@") && email.includes(".com");
+  const usernameValid = username.length > 8;
+
   const showToast = (type, message) => {
     setToast({ type, message });
     setTimeout(() => {
@@ -36,29 +39,39 @@ const EditProfile = () => {
     }
   };
 
-  const OnhandleUpdate = async () => {
-    const token = localStorage.getItem("login");
+  const OnhandleUpdate = async (e) => {
     try {
-      console.log(email);
-      if (email && username && firstName && lastName) {
-        const response = await axios.post(
-          "http://localhost:4500/user/update",
-          { username, email, name: `${firstName} ${lastName}` },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(response);
-        if (response) {
-          showToast("success", "Profile updated successfully!");
-        }
-      } else {
+      const token = localStorage.getItem("login");
+      if (!emailValid) {
+        showToast("error", "Email must be filled in correctly");
+        return;
+      }
+      if (!usernameValid) {
+        showToast("error", "Username must be at least 8 characters");
+        return;
+      }
+      if (!email || !username || !firstName || !lastName) {
         showToast("error", "Incomplete form data.");
+        return;
+      }
+      const response = await axios.post(
+        "http://localhost:4500/user/update",
+        { username, email, name: `${firstName} ${lastName}` },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      if (response.status === 200) {
+        showToast("success", "Profile updated successfully!");
+      } else {
+        showToast("error", "Failed to update profile.");
       }
     } catch (error) {
-      console.error("Update failed:", error);
+      console.error(error);
+      showToast("error", "An error occurred while updating the profile.");
     }
   };
 

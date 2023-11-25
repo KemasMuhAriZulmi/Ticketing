@@ -4,6 +4,7 @@ import NormalForm from "../components/Form-Normal";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import Toast from "../components/Alert";
 
 const RegisterUser = () => {
   const navigate = useNavigate();
@@ -15,8 +16,20 @@ const RegisterUser = () => {
   const [lname, setLname] = useState("");
   const [inRefferal, setRefferalCode] = useState("");
   const [inEror, setError] = useState("");
+  const [toast, setToast] = useState(null);
+
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
 
   const onRegister = async () => {
+    const emailValid = email.includes("@") && email.includes(".com");
+    const usernameValid = username.length > 8;
+    const passwordValid = password.length > 8 && password === confirmPassword;
+
     console.log(
       email,
       password,
@@ -26,35 +39,56 @@ const RegisterUser = () => {
       lname,
       inRefferal
     );
+
     try {
       if (email && password && confirmPassword && username && fname && lname) {
-        console.log(inRefferal);
-        if (!inRefferal) {
-          console.log("masuk");
-          const test = await axios.post("http://localhost:4500/user/register", {
-            email,
-            password,
-            confirmPassword,
-            username,
-            name: `${fname} ${lname}`,
-          });
-          console.log("test", test.data);
-          navigate("/login-user");
-        } else {
-          const test = await axios.post("http://localhost:4500/user/register", {
-            email,
-            password,
-            confirmPassword,
-            username,
-            name: fname + lname,
-            refferal: inRefferal,
-          });
-          console.log("test", test.data);
-          navigate("/login-user");
+        if (!passwordValid) {
+          return showToast(
+            "error",
+            "Password must be at least 8 characters and equal to confirm password"
+          );
+        }
+        if (!usernameValid) {
+          return showToast("error", "Username must be at least 8 character");
+        }
+        if (!emailValid) {
+          return showToast("error", "Email must filled in correct");
+        }
+        if ((emailValid, usernameValid, passwordValid)) {
+          console.log(inRefferal);
+          if (!inRefferal) {
+            console.log("masuk");
+            const test = await axios.post(
+              "http://localhost:4500/user/register",
+              {
+                email,
+                password,
+                confirmPassword,
+                username,
+                name: `${fname} ${lname}`,
+              }
+            );
+            console.log("test", test.data);
+            navigate("/login-user");
+          } else {
+            const test = await axios.post(
+              "http://localhost:4500/user/register",
+              {
+                email,
+                password,
+                confirmPassword,
+                username,
+                name: fname + lname,
+                refferal: inRefferal,
+              }
+            );
+            console.log("test", test);
+            navigate("/login-user");
+          }
         }
       } else {
         console.log("MASUK ELSE");
-        setError("Please fill in all required fields.");
+        showToast("error", "Incomplete form data.");
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -128,6 +162,13 @@ const RegisterUser = () => {
           </div>
         </div>
       </div>
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

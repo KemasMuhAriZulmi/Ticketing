@@ -2,8 +2,31 @@ import Banner from "../assets/booking.jpg";
 import { useNavigate } from "react-router-dom";
 import { Tab } from "@headlessui/react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const UserBookings = () => {
+  useEffect(() => {
+    const token = localStorage.getItem("login");
+    const result = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4500/transaction/mybooks",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response);
+      } catch (error) {
+        showToast("error", "Email or Password invalid");
+      }
+    };
+
+    result();
+  }, []);
+
   return (
     <div>
       <div
@@ -26,16 +49,12 @@ const UserBookings = () => {
           </div>
         </div>
       </div>
-
-      {/* LIST BOOKINGS */}
-
-      {/* FILTER */}
       <div className="py-2">
-        <div class="w-full md:w-2/3  p-5 mx-auto bg-white">
-          <div class="relative">
-            <div class="absolute flex items-center ml-2 h-full">
+        <div className="w-full md:w-2/3  p-5 mx-auto bg-white">
+          <div className="relative">
+            <div className="absolute flex items-center ml-2 h-full">
               <svg
-                class="w-4 h-4 fill-current text-primary-gray-dark"
+                className="w-4 h-4 fill-current text-primary-gray-dark"
                 viewBox="0 0 16 16"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -47,27 +66,27 @@ const UserBookings = () => {
             <input
               type="text"
               placeholder="Cari Yang Mana"
-              class="px-8 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
+              className="px-8 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
             />
           </div>
 
-          <div class="flex items-center justify-between mt-4">
-            <p class="font-medium">Filters</p>
+          <div className="flex items-center justify-between mt-4">
+            <p className="font-medium">Filters</p>
 
-            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-md">
+            <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-md">
               Reset Filter
             </button>
           </div>
 
           <div>
-            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-              <select class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+              <select className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
                 <option value="">All Type</option>
                 <option value="upcoming">Upcoming</option>
                 <option value="distant">Distant</option>
               </select>
 
-              <select class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
+              <select className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
                 <option value="">Any Price</option>
                 <option value="ASC">Ascending</option>
                 <option value="DESC">Descending</option>
@@ -83,6 +102,7 @@ const UserBookings = () => {
         <div>
           <div className="w-full h-[1px] my-4 bg-slate-300 mx-auto"></div>
         </div>
+        <div></div>
       </div>
     </div>
   );

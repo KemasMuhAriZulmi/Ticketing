@@ -11,7 +11,10 @@ const Toast = (props) => {
   return (
     <div className={toastClasses}>
       <div className="flex items-center">
-        <div className="mr-4">
+        <p className="text-white">{message}</p>
+        <div className="ml-4 cursor-pointer" onClick={onClose}>
+          {" "}
+          {/* Move the icon container to the right */}
           {type === "success" ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -21,9 +24,9 @@ const Toast = (props) => {
               className="h-6 w-6 text-green-300"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M5 13l4 4L19 7"
               />
             </svg>
@@ -36,21 +39,14 @@ const Toast = (props) => {
               className="h-6 w-6 text-red-300"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
           )}
         </div>
-        <p className="text-white">{message}</p>
-        <button
-          className="text-white ml-2 focus:outline-none"
-          onClick={onClose}
-        >
-          &#x2715;
-        </button>
       </div>
     </div>
   );
