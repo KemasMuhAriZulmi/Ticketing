@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import Toast from "../components/Alert";
 
 const RegisterPromotor = () => {
   const navigate = useNavigate();
@@ -16,13 +17,35 @@ const RegisterPromotor = () => {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [inEror, setError] = useState("");
+  const [toast, setToast] = useState(null);
+
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
 
   const onRegister = async () => {
+    const emailValid = email.includes("@") && email.includes(".com");
+    const usernameValid = username.length > 8;
+    const passwordValid = password.length > 8 && password === confirmPassword;
     console.log("MASUK");
     console.log(email, password, confirmpassword, username, fname, lname);
     try {
       if (email && password && confirmpassword && username && fname && lname) {
-        console.log("MASUK DUA");
+        if (!passwordValid) {
+          return showToast(
+            "error",
+            "Password must be at least 8 characters and equal to confirm password"
+          );
+        }
+        if (!usernameValid) {
+          return showToast("error", "Username must be at least 8 character");
+        }
+        if (!emailValid) {
+          return showToast("error", "Email must filled in correct");
+        }
         const test = await axios.post(
           "http://localhost:4500/promotor/register",
           {
@@ -37,7 +60,7 @@ const RegisterPromotor = () => {
         navigate("/login-promotor");
       } else {
         console.log("MASUK ELSE");
-        setError("Please fill in all required fields.");
+        showToast("error", "Incomplete form data.");
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -88,12 +111,14 @@ const RegisterPromotor = () => {
             <div id="name-&-username" className="flex my-4">
               <NormalForm
                 label="Username"
+                placeholder="Username"
                 onChange={(e) => setInUsername(e.target.value)}
               />
             </div>
             <div id="email-addres">
               <NormalForm
                 label="Email"
+                placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -123,6 +148,13 @@ const RegisterPromotor = () => {
           </div>
         </div>
       </div>
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
       {/* NOTE : BUTUH SLICHING */}
     </div>
   );

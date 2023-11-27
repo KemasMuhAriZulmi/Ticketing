@@ -19,8 +19,7 @@ const CheckOut = () => {
   const [isPosCode, setIsPosCode] = useState("");
   const [isAddress, setIsAddress] = useState("");
   const [isSubTotal, setIsSubTotal] = useState(0);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    useState("CreditCard");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("BCA");
 
   const [isFee, setIsFee] = useState(1500);
   const [isVoucher, setIsVoucher] = useState("");
@@ -57,6 +56,36 @@ const CheckOut = () => {
 
   const onProcessPayment = async () => {
     try {
+      console.log(isPhone, isCountry);
+      if (!isVoucher) {
+        console.log("MASUK");
+        const response = await axios.post(
+          "http://localhost:4500/transaction/create",
+          {
+            totalItems: data.totalItems.map((item) => ({
+              ticketid: item.ticketid,
+              quantity: item.ticketCount,
+            })),
+            userid: 6,
+            payment: selectedPaymentMethod,
+            eventid: urlParams.id,
+            name: isFname + isLname,
+            phone: isPhone,
+            country: isCountry,
+            province: isProvince,
+            city: isCity,
+            email: isEmail,
+            poscode: isPosCode,
+            address: isAddress,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response);
+      }
       const response = await axios.post(
         "http://localhost:4500/transaction/create",
         {
@@ -65,17 +94,17 @@ const CheckOut = () => {
             quantity: item.ticketCount,
           })),
           userid: 6,
-          payment: "QRIS",
-          eventid: 11,
-          name: "Gibran",
-          phone: "08588888888",
-          country: "INDONESIA",
-          province: "Jawa Timur",
-          city: "Kediri",
-          email: "gibrand987@gmail.com",
-          poscode: "64181",
-          address: "KEDIRI",
-          // promocode: "promoBNI",
+          payment: selectedPaymentMethod,
+          eventid: urlParams.id,
+          name: isFname + isLname,
+          phone: isPhone,
+          country: isCountry,
+          province: isProvince,
+          city: isCity,
+          email: isEmail,
+          poscode: isPosCode,
+          address: isAddress,
+          promocode: isVoucher,
         },
         {
           headers: {
@@ -114,20 +143,48 @@ const CheckOut = () => {
           <div className="w-full h-[1px] my-4 bg-slate-300 mx-auto"></div>
         </div>
         <div className="flex pt-4">
-          <MiniForm label="first name" />
-          <MiniForm label="last name" position="end" />
+          <MiniForm
+            label="first name"
+            onChange={(e) => setIsFname(e.target.value)}
+          />
+          <MiniForm
+            label="last name"
+            position="end"
+            onChange={(e) => setIsLname(e.target.value)}
+          />
         </div>
         <div className="flex pt-4">
-          <MiniForm label="no telepon" />
-          <MiniForm label="negara" position="end" />
+          <MiniForm
+            label="no telepon"
+            onChange={(e) => setIsPhone(e.target.value)}
+          />
+          <MiniForm
+            label="negara"
+            position="end"
+            onChange={(e) => setIsCountry(e.target.value)}
+          />
         </div>
         <div className="flex pt-4">
-          <MiniForm label="provinsi" />
-          <MiniForm label="kota" position="end" />
+          <MiniForm
+            label="provinsi"
+            onChange={(e) => setIsProvince(e.target.value)}
+          />
+          <MiniForm
+            label="kota"
+            position="end"
+            onChange={(e) => setIsCity(e.target.value)}
+          />
         </div>
         <div className="flex pt-4">
-          <MiniForm label="email" />
-          <MiniForm label="kode pos" position="end" />
+          <MiniForm
+            label="email"
+            onChange={(e) => setIsEmail(e.target.value)}
+          />
+          <MiniForm
+            label="kode pos"
+            position="end"
+            onChange={(e) => setIsPosCode(e.target.value)}
+          />
         </div>
         <div className="pt-2">
           <p className="text-rose-500">
@@ -139,6 +196,7 @@ const CheckOut = () => {
             className="form-input py-2 px-3 block w-full leading-5 rounded-md border border-gray-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
             rows="4"
             placeholder="Address"
+            onChange={(e) => setIsAddress(e.target.value)}
           ></textarea>
           <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <svg
@@ -239,7 +297,12 @@ const CheckOut = () => {
         </div>
 
         <div>
-          <h1 className="font-bold text-xl my-2">Voucher</h1>
+          <h1
+            className="font-bold text-xl my-2"
+            onChange={(e) => setIsVoucher(e.target.value)}
+          >
+            Voucher
+          </h1>
           <div className="flex focus-within:border-blue-500 p-0">
             <input type="text" className="w-full border border-gray-300" />
             <button

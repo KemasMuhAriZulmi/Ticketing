@@ -56,12 +56,16 @@ const LoginPromotor = () => {
         </Link>
       </div>
       <div className="py-2">
-        <NormalForm label="Email" onChange={(e) => setEmail(e.target.value)} />
+        <NormalForm
+          placeholder="email"
+          label="email *"
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
       <div className="py-2">
         <NormalForm
-          label="password"
-          type="password"
+          label="password *"
+          placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
@@ -70,9 +74,12 @@ const LoginPromotor = () => {
       </div>
       {inError && <p className="text-red-500">{inError}</p>}
       <div>
-        <h1 className="text-xs font-medium text-slate-400 pb-3">
+        <Link
+          to="/change-password"
+          className="text-xs font-medium text-slate-400 pb-3"
+        >
           Lupa Kata Sandi?
-        </h1>
+        </Link>
       </div>
     </div>
   );

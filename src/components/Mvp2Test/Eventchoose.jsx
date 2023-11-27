@@ -22,7 +22,7 @@ const EventChoose = () => {
   }, []);
 
   return (
-    <div className="bg-neutral-200 h-screen flex flex-col items-center justify-center">
+    <div className="bg-neutral-200 h-auto flex flex-col items-center justify-center">
       <div className="max-w-screen-md w-full">
         <h1 className="text-3xl font-bold mb-4">Choose The Event</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

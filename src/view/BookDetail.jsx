@@ -165,15 +165,6 @@ const BookDetail = () => {
               </div>
             </div>
           </div>
-          <div className="mb-2">
-            <h1 className="text-[#002744] text-[16px] font-bold">
-              Booked Ticket
-            </h1>
-            <div className="text-slate-500 font-bold text-[12px]">
-              <h2 className="my-1">1. Makan Bareng (VIP) </h2>
-              <h2 className="my-1">2, Makan Bareng (Regular) </h2>
-            </div>
-          </div>
         </div>
       </div>
     </div>
