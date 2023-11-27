@@ -1,32 +1,68 @@
 import Banner from "../assets/booking.jpg";
-import { useNavigate } from "react-router-dom";
-import { Tab } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const UserBookings = () => {
-  useEffect(() => {
-    const token = localStorage.getItem("login");
-    const result = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4500/transaction/mybooks",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(response);
-      } catch (error) {
-        showToast("error", "Email or Password invalid");
-      }
-    };
+  const [isTicket, setInTicket] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(4);
 
-    result();
+  const EventNames = async (eventId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4500/transaction/whatevents/${eventId}`
+      );
+      return response.data.name || "Unknown Event";
+    } catch (error) {
+      console.error(error);
+      return "Unknown Event";
+    }
+  };
+
+  const TransactionData = async () => {
+    const token = localStorage.getItem("login");
+    try {
+      const response = await axios.get(
+        "http://localhost:4500/transaction/mybooks",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const transactions = response.data.data;
+
+      const updatedTransactions = await Promise.all(
+        transactions.map(async (booking) => {
+          const eventName = await EventNames(booking.eventid);
+          return {
+            ...booking,
+            eventName,
+
+            isUpcoming: new Date(booking.startdate) > new Date(),
+          };
+        })
+      );
+
+      setInTicket(updatedTransactions);
+    } catch (error) {
+      console.error(error);
+      showToast("error", "Error fetching transaction data");
+    }
+  };
+
+  useEffect(() => {
+    TransactionData();
   }, []);
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = isTicket.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   return (
     <div>
       <div
@@ -74,7 +110,7 @@ const UserBookings = () => {
             <p className="font-medium">Filters</p>
 
             <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-md">
-              Reset Filter
+              Apply
             </button>
           </div>
 
@@ -102,7 +138,59 @@ const UserBookings = () => {
         <div>
           <div className="w-full h-[1px] my-4 bg-slate-300 mx-auto"></div>
         </div>
-        <div></div>
+        <div>
+          {/* Please Looping this card */}
+          {currentItems.map((booking) => (
+            <div
+              key={booking.id}
+              className={`p-2 w-10/12 shadow rounded-lg my-2 bg-white mx-auto max-w-md ${
+                booking.isUpcoming
+                  ? "border-l-4 border-green-500"
+                  : "border-l-4 border-red-500"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <h1 className="text-[#294A62] font-bold">
+                  {booking.eventName}
+                </h1>
+                <Link
+                  to={`/ticket-bookings/detail/${booking.id}`}
+                  className="text-blue-500"
+                >
+                  Detail
+                </Link>
+              </div>
+              <h1 className="font-bold">{booking.invoice}</h1>
+              <div className="flex justify-between">
+                <p className="font-bold text-[12px]">
+                  Biils : {booking.subtotal}
+                </p>
+                <p
+                  className="font-bold text-[14px]"
+                  style={{ color: booking.ispaid ? "green" : "red" }}
+                >
+                  {booking.ispaid ? "success" : "waiting"}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center mt-4">
+          {Array.from(
+            { length: Math.ceil(isTicket.length / itemsPerPage) },
+            (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => paginate(index + 1)}
+                className={`mx-1 px-3 py-2 rounded-md bg-gray-200 hover:bg-gray-300 ${
+                  currentPage === index + 1 ? "bg-gray-300" : ""
+                }`}
+              >
+                {index + 1}
+              </button>
+            )
+          )}
+        </div>
       </div>
     </div>
   );

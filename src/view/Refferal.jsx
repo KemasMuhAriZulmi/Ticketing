@@ -128,17 +128,17 @@ const Refferal = () => {
                     <FaTwitter
                       size={"48px"}
                       className="mx-2 cursor-pointer"
-                      style={{ color: "#1da1f2" }}
+                      style={{ color: "#3b5998" }}
                     />
                     <FaWhatsapp
                       size={"48px"}
                       className="mx-2 cursor-pointer"
-                      style={{ color: "#25D366" }}
+                      style={{ color: "#3b5998" }}
                     />
                     <FaTelegram
                       size={"48px"}
                       className="mx-2 cursor-pointer"
-                      style={{ color: "#0088cc" }}
+                      style={{ color: "#3b5998" }}
                     />
                   </div>
                 </div>

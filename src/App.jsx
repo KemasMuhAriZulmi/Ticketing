@@ -19,6 +19,10 @@ import CheckOutPage from "./pages/CheckoutPage";
 import PayPage from "./pages/Pay";
 import BookingDetailPage from "./pages/BookingsDetail";
 import ResetPassPage from "./pages/ResetPassPage";
+// TEMPORAY //
+import EventChoose from "./components/Mvp2Test/eventchoose";
+import EventDetail from "./components/Mvp2Test/eventdetail";
+import UnauthorizedPage from "./view/401";
 
 //Gibran Import End
 
@@ -65,14 +69,19 @@ function App() {
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/refferal" element={<RefferalPages />} />
         <Route path="/input-pass" element={<InputPassPage />} />
-        <Route path="/checkout" element={<CheckOutPage />} />
-        <Route path="/pay" element={<PayPage />} />
+        <Route path="/checkout/:id" element={<CheckOutPage />} />
+        <Route path="/pay/:id" element={<PayPage />} />
         <Route
           path="/ticket-bookings/detail/:id"
           element={<BookingDetailPage />}
         />
         <Route path="/forgotpass" element={<ResetPassPage />} />
+        <Route path="/401" element={<UnauthorizedPage />} />
         <Route path="*" element={<NotFoundPage />} />
+
+        {/* TEMPORARY ROUTING */}
+        <Route path="/event-choose" element={<EventChoose />} />
+        <Route path="/event-detail/:id" element={<EventDetail />} />
       </Routes>
       {/* Gibran End */}
     </>

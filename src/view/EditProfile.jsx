@@ -14,8 +14,6 @@ const EditProfile = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
   const [toast, setToast] = useState(null);
 
   const emailValid = email.includes("@") && email.includes(".com");
@@ -39,35 +37,62 @@ const EditProfile = () => {
     }
   };
 
-  const OnhandleUpdate = async (e) => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
     try {
       const token = localStorage.getItem("login");
       if (!emailValid) {
-        showToast("error", "Email must be filled in correctly");
+        showToast("error", "Please enter a valid email address");
         return;
       }
       if (!usernameValid) {
         showToast("error", "Username must be at least 8 characters");
         return;
       }
-      if (!email || !username || !firstName || !lastName) {
+      if (
+        !email.trim() ||
+        !username.trim() ||
+        !firstName.trim() ||
+        !lastName.trim()
+      ) {
         showToast("error", "Incomplete form data.");
         return;
       }
+
+      console.log(selectedImage);
+
+      const formData = new FormData();
+      formData.append("username", username.trim());
+      formData.append("email", email.trim());
+      formData.append("name", `${firstName.trim()} ${lastName.trim()}`);
+
+      if (selectedImage) {
+        formData.append("fileupload", selectedImage);
+      }
+
+      console.log(formData.get("fileupload"));
+
       const response = await axios.post(
         "http://localhost:4500/user/update",
-        { username, email, name: `${firstName} ${lastName}` },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
-      console.log(response);
+
       if (response.status === 200) {
-        showToast("success", "Profile updated successfully!");
+        showToast(
+          "success",
+          response.data.message || "Profile updated successfully!"
+        );
       } else {
-        showToast("error", "Failed to update profile.");
+        showToast(
+          "error",
+          response.data.message || "Failed to update profile."
+        );
       }
     } catch (error) {
       console.error(error);
@@ -76,20 +101,21 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    const result = async () => {
+    const UserProfile = async () => {
       try {
-        const secondToken = localStorage.getItem("login");
-        const secondResponse = await axios.get(
-          "http://localhost:4500/user/detail",
-          {
-            headers: {
-              Authorization: `Bearer ${secondToken}`,
-            },
-          }
-        );
-        console.log(secondResponse.data.data);
-        const { email, username, name } = secondResponse.data.data;
+        const token = localStorage.getItem("login");
+        const response = await axios.get("http://localhost:4500/user/detail", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log(selectedImage);
+        const { email, username, name, img } = response.data.data;
         const [fName, lName] = name.split(" ");
+        setSelectedImage(img);
+        console.log(img);
+        console.log(selectedImage);
         setEmail(email || "");
         setUsername(username || "");
         setFirstName(fName || "");
@@ -99,7 +125,7 @@ const EditProfile = () => {
       }
     };
 
-    result();
+    UserProfile();
   }, []);
 
   return (
@@ -120,13 +146,19 @@ const EditProfile = () => {
             <div>
               <div className="relative inline-block">
                 <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200">
-                  <img
-                    src={
-                      selectedImage ? URL.createObjectURL(selectedImage) : ""
-                    }
-                    className="w-full h-full object-cover"
-                    alt="Profile"
-                  />
+                  {selectedImage && selectedImage instanceof Blob ? (
+                    <img
+                      src={URL.createObjectURL(selectedImage)}
+                      className="w-full h-full object-cover"
+                      alt="Profile"
+                    />
+                  ) : (
+                    <img
+                      src={`http://localhost:4500/public/profileimage/${selectedImage}`}
+                      className="w-full h-full object-cover"
+                      alt="Profile"
+                    />
+                  )}
                   <div className="absolute top-0 right-0">
                     <label htmlFor="image-upload" className="cursor-pointer">
                       <LuImagePlus style={{ color: "black" }} />
@@ -136,7 +168,7 @@ const EditProfile = () => {
                       type="file"
                       accept=".jpg, .jpeg, .png"
                       style={{ display: "none" }}
-                      onChange={handleImageChange}
+                      onChange={(e) => handleImageChange(e)}
                     />
                   </div>
                 </div>
@@ -144,12 +176,12 @@ const EditProfile = () => {
             </div>
             <div className="flex pt-1">
               <MiniForm
-                label="first name"
+                label="First Name"
                 onChange={(e) => setFirstName(e.target.value)}
                 defaultValue={firstName}
               />
               <MiniForm
-                label="last name"
+                label="Last Name"
                 position="end"
                 onChange={(e) => setLastName(e.target.value)}
                 defaultValue={lastName}
@@ -157,31 +189,21 @@ const EditProfile = () => {
             </div>
             <div className="py-1">
               <NormalForm
-                placeholder="username"
-                label="username*"
+                placeholder="Username"
+                label="Username*"
                 defaultValue={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <NormalForm
-                placeholder="email"
-                label="email*"
+                placeholder="Email"
+                label="Email*"
                 defaultValue={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="w-3/12 py-2">
-              <ButtonRegister title="Update" onClick={OnhandleUpdate} />
+              <ButtonRegister title="Update" onClick={handleUpdate} />
             </div>
-            {successMessage && (
-              <div className="bg-green-500 text-white p-4 mt-4">
-                {successMessage}
-              </div>
-            )}
-            {errorMessage && (
-              <div className="bg-red-500 text-white p-4 mt-4">
-                {errorMessage}
-              </div>
-            )}
           </div>
         </div>
       </div>
