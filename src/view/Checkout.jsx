@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import Toast from "../components/Alert";
 
 const CheckOut = () => {
   const token = localStorage.getItem("login");
@@ -20,11 +21,18 @@ const CheckOut = () => {
   const [isAddress, setIsAddress] = useState("");
   const [isSubTotal, setIsSubTotal] = useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("BCA");
-
+  const [toast, setToast] = useState(null);
   const [isFee, setIsFee] = useState(1500);
   const [isVoucher, setIsVoucher] = useState("");
   const [eventData, setEventData] = useState([]);
   const [isTotalItem, setIsTotalItem] = useState([]);
+
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
 
   const urlParams = useParams();
   console.log(eventData);
@@ -56,7 +64,23 @@ const CheckOut = () => {
 
   const onProcessPayment = async () => {
     try {
-      console.log(isPhone, isCountry);
+      if (
+        !selectedPaymentMethod ||
+        !isFname ||
+        !isLname ||
+        !isPhone ||
+        !isCountry ||
+        isProvince ||
+        isCity ||
+        isEmail ||
+        isPosCode ||
+        isAddress
+      ) {
+        return showToast(
+          "error",
+          response.data.message || "Failed to update profile."
+        );
+      }
       if (!isVoucher) {
         console.log("MASUK");
         const response = await axios.post(
@@ -84,7 +108,12 @@ const CheckOut = () => {
             },
           }
         );
-        console.log(response);
+        if (response.data.success === true) {
+          showToast(
+            "success",
+            response.data.message || "Transaction created successfully"
+          );
+        }
       }
       if (isVoucher) {
         const response = await axios.post(
@@ -113,10 +142,17 @@ const CheckOut = () => {
             },
           }
         );
-        console.log(response);
+        console.log(response.data.data);
+        if (response.data.success === true) {
+          showToast(
+            "success",
+            response.data.message || "Transaction completed successfully"
+          );
+        }
       }
     } catch (error) {
       console.log(error);
+      showToast("error", response.data.message || "Failed to update profile.");
     }
   };
 
@@ -339,6 +375,13 @@ const CheckOut = () => {
           />
         </div>
       </div>
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };
