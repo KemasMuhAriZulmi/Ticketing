@@ -64,7 +64,7 @@ const CheckOut = () => {
           {
             totalItems: data.totalItems.map((item) => ({
               ticketid: item.ticketid,
-              quantity: item.ticketCount,
+              quantity: item.quantity,
             })),
             userid: 6,
             payment: selectedPaymentMethod,
@@ -86,33 +86,35 @@ const CheckOut = () => {
         );
         console.log(response);
       }
-      const response = await axios.post(
-        "http://localhost:4500/transaction/create",
-        {
-          totalItems: data.totalItems.map((item) => ({
-            ticketid: item.ticketid,
-            quantity: item.ticketCount,
-          })),
-          userid: 6,
-          payment: selectedPaymentMethod,
-          eventid: urlParams.id,
-          name: isFname + isLname,
-          phone: isPhone,
-          country: isCountry,
-          province: isProvince,
-          city: isCity,
-          email: isEmail,
-          poscode: isPosCode,
-          address: isAddress,
-          promocode: isVoucher,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      if (isVoucher) {
+        const response = await axios.post(
+          "http://localhost:4500/transaction/create",
+          {
+            totalItems: data.totalItems.map((item) => ({
+              ticketid: item.ticketid,
+              quantity: item.ticketCount,
+            })),
+            userid: 6,
+            payment: selectedPaymentMethod,
+            eventid: urlParams.id,
+            name: isFname + isLname,
+            phone: isPhone,
+            country: isCountry,
+            province: isProvince,
+            city: isCity,
+            email: isEmail,
+            poscode: isPosCode,
+            address: isAddress,
+            promocode: isVoucher,
           },
-        }
-      );
-      console.log(response);
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response);
+      }
     } catch (error) {
       console.log(error);
     }
