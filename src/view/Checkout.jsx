@@ -70,11 +70,11 @@ const CheckOut = () => {
         !isLname ||
         !isPhone ||
         !isCountry ||
-        isProvince ||
-        isCity ||
-        isEmail ||
-        isPosCode ||
-        isAddress
+        !isProvince ||
+        !isCity ||
+        !isEmail ||
+        !isPosCode ||
+        !isAddress
       ) {
         return showToast("error", "Complete Data!");
       }
