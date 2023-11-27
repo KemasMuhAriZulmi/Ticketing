@@ -76,10 +76,7 @@ const CheckOut = () => {
         isPosCode ||
         isAddress
       ) {
-        return showToast(
-          "error",
-          response.data.message || "Failed to update profile."
-        );
+        return showToast("error", "Complete Data!");
       }
       if (!isVoucher) {
         console.log("MASUK");
@@ -152,7 +149,7 @@ const CheckOut = () => {
       }
     } catch (error) {
       console.log(error);
-      showToast("error", response.data.message || "Failed to update profile.");
+      showToast("error", "Failed to update profile.");
     }
   };
 
@@ -293,9 +290,7 @@ const CheckOut = () => {
               <h1>
                 {eventData.name}-{ticket.ticketType}
               </h1>
-              <h1>
-                {eventData.name}-{`${ticket.ticketCount}x`}
-              </h1>
+              <h1>{`${ticket.ticketCount}x`}</h1>
             </div>
           ))}
         </div>
