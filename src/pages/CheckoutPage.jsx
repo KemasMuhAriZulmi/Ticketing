@@ -40,10 +40,17 @@ const CheckOutPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("login");
     const result = async () => {
-      const response = await axios.get("http://localhost:4500/user/checkrole", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (response.data !== "user") {
+      try {
+        const response = await axios.get(
+          "http://localhost:4500/user/checkrole",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (response.data !== "user") {
+          navigate("/401");
+        }
+      } catch (error) {
         navigate("/401");
       }
     };

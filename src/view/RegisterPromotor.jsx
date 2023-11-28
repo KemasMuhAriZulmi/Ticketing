@@ -12,7 +12,7 @@ const RegisterPromotor = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setInUsername] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -31,9 +31,9 @@ const RegisterPromotor = () => {
     const usernameValid = username.length > 8;
     const passwordValid = password.length > 8 && password === confirmPassword;
     console.log("MASUK");
-    console.log(email, password, confirmpassword, username, fname, lname);
+    console.log(email, password, confirmPassword, username, fname, lname);
     try {
-      if (email && password && confirmpassword && username && fname && lname) {
+      if (email && password && confirmPassword && username && fname && lname) {
         if (!passwordValid) {
           return showToast(
             "error",
@@ -51,7 +51,7 @@ const RegisterPromotor = () => {
           {
             email,
             password,
-            confirmpassword,
+            confirmPassword,
             username,
             name: fname + lname,
           }
