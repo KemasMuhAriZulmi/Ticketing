@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body, h1, h2, h3, p, ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Basic styling for header */
+.header {
+  background-color: #3490dc;
+  color: #fff;
+  padding: 1rem;
+}
+
+/* Basic styling for content */
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Styling for error notification */
+.error-notification {
+  background-color: #e53e3e;
+  color: #fff;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+/* Styling for loader */
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+  margin-top: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Styling for purchase status */
+.purchase-status {
+  padding: 1rem;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.purchase-status.success {
+  background-color: #38a169;
+  color: #fff;
+}
+
+.purchase-status.failed {
+  background-color: #e53e3e;
+  color: #fff;
+}
+.page-enter-active, .page-leave-active {
+  transition: opacity 0.5s;
+}
+
+.page-enter, .page-leave-to {
+  opacity: 0;
+}
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Styling for loader */
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.toast-notification {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: #38a169;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for close button in toast notification */
+.toast-notification button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+.transition {
+  transition: transform 0.3s;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.confirmation-button {
+  transition: transform 0.3s;
+}
+
+.confirmation-button:hover {
+  transform: scale(1.1);
+}
+.chart-container {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.chart-container.chart-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.filter-button {
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.filter-button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+.EventCard {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+
+  /* &:hover {
+    transform: scale(1.05);
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #4a5568;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: #4299e1;
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  } */
+}
+.search-input {
+  border: 1px solid #4299e1;
+  padding: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+.delete-button {
+  background-color: #e53e3e;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.2rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+
+  /* &:hover {
+    background-color: #c53030;
+  } */
+}
+
+/* Styling for Edit Button */
+.edit-button {
+  background-color: #4299e1;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.2rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+
+  /* &:hover {
+    background-color: #3182ce;
+  } */
+}
