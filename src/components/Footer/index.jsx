@@ -2,13 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-200 text-center p-4">
-      <p>&copy; ©.</p>
-      <div className="mt-2">
-        <a href="/kebijakan">Kebijakan Privasi</a>
-        <span className="mx-2">|</span>
-        <a href="/tentang-kami">Tentang Kami</a>
-      </div>
+    <footer className="bg-gray-200 text-gray-600 p-4 text-center fixed bottom-0 w-full">
+      &copy; 2023 Ticketing System By Kazuri & Gibran. All rights reserved.
     </footer>
   );
 };

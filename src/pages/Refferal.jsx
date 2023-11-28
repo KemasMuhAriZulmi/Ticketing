@@ -1,10 +1,7 @@
-import Refferal from "../view/Refferal.jsx";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
-
+import Refferal from "../view/Refferal.jsx";
 const RefferalPages = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -59,9 +56,7 @@ const RefferalPages = () => {
   });
   return (
     <div>
-      <Navbar />
       <Refferal />
-      <Footer></Footer>
     </div>
   );
 };

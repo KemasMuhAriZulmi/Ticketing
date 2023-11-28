@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import Pay from "../view/Pay";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -59,9 +57,7 @@ const PayPage = () => {
   });
   return (
     <div>
-      <Navbar />
       <Pay />
-      <Footer />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import UserInformation from "../view/UserInformation";
-import Navbar from "../components/Navbar";
+
 import UserNavbar from "../components/User-Navbar";
 import { useEffect } from "react";
 import axios from "axios"; // Import axios
@@ -60,7 +60,6 @@ const UserInformationPage = () => {
 
   return (
     <div>
-      <Navbar />
       <UserInformation />
       <UserNavbar />
     </div>

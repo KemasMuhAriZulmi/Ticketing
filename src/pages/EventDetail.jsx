@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useHistory } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "../axios";
 
 const EventDetail = () => {
   const { id } = useParams();
-  const history = useHistory();
+  // const history = useHistory();
   const [event, setEvent] = useState(null);
   const [purchaseData, setPurchaseData] = useState({
     quantity: 1,
@@ -63,7 +63,7 @@ const EventDetail = () => {
           <p className="text-gray-500 mb-2">{event?.date}</p>
           <p className="mb-4">{event?.description}</p>
           <Link
-            to={`/events/${id}/payment`}
+            to={`/event-detail/${id}`}
             className="bg-blue-500 text-white py-2 px-4 inline-block"
           >
             Buy Ticket

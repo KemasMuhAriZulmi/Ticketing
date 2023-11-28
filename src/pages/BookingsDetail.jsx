@@ -52,9 +52,7 @@ const BookingDetailPage = () => {
 
   return (
     <div>
-      <Navbar />
       <BookDetail />
-      <Footer />
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import Checkout from "../view/Checkout";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -58,9 +57,7 @@ const CheckOutPage = () => {
   });
   return (
     <div>
-      <Navbar />
       <Checkout />
-      <Footer />
     </div>
   );
 };

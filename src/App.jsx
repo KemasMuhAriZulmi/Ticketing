@@ -19,21 +19,21 @@ import CheckOutPage from "./pages/CheckoutPage";
 import PayPage from "./pages/Pay";
 import BookingDetailPage from "./pages/BookingsDetail";
 import ResetPassPage from "./pages/ResetPassPage";
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Home from './Pages/Home';
-import EventDetail from './Pages/EventDetail';
-import Payment from './pages/Payment';
-import Confirmation from './pages/Confirmation';
-import NotFound from './pages/NotFound';
-import About from './pages/About';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ErrorBoundary from './components/ErrorBoundary';
-import Dashboard from './pages/Dashboard';
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import Home from "./Pages/Home";
+import EventDetail from "./Pages/EventDetail";
+import Payment from "./pages/Payment";
+import Confirmation from "./pages/Confirmation";
+import NotFound from "./pages/NotFound";
+import About from "./pages/About";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ErrorBoundary from "./components/ErrorBoundary";
+import Dashboard from "./pages/Dashboard";
 // import AllEventsPage from './pages/AllEventsPage';
 // TEMPORAY //
 import EventChoose from "./components/Mvp2Test/eventchoose";
-import EventDetail from "./components/Mvp2Test/eventdetail";
+import EventCheckout from "./components/Mvp2Test/eventdetail";
 import UnauthorizedPage from "./view/401";
 
 //Gibran Import End
@@ -69,50 +69,50 @@ const App = () => {
   }, []);
   return (
     <ErrorBoundary>
-      <Router>
-        <Header />
-        <TransitionGroup>
-          <CSSTransition
-            timeout={500}
-            classNames="fade"
-          >
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/events/:id" element={<EventDetail />} />
-              {/* <Route path="/events" component={AllEventsPage} />  */}
-              <Route path="/events/:id/payment" element={<Payment />} />
-              <Route path="/confirmation" element={<Confirmation />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="*" element={<NotFound />} />
-              <Route path="/login-user" element={<LoginUserPage />} />
-          <Route path="/login-promotor" element={<LoginPromotorPage />} />
-        <Route path="/register-user" element={<RegisterUserPage />} />
-        <Route path="/register-promotor" element={<RegisterPromotorPage />} />
-        <Route path="/user-information" element={<UserInformationPage />} />
-        <Route path="/ticket-bookings" element={<UserBookingsPage />} />
-        <Route path="/change-password" element={<ChangePassPage />} />
-        <Route path="/edit-profile" element={<EditProfilePage />} />
-        <Route path="/refferal" element={<RefferalPages />} />
-        <Route path="/input-pass" element={<InputPassPage />} />
-        <Route path="/checkout/:id" element={<CheckOutPage />} />
-        <Route path="/pay/:id" element={<PayPage />} />
-        <Route
-          path="/ticket-bookings/detail/:id"
-          element={<BookingDetailPage />}
-        />
-        <Route path="/forgotpass" element={<ResetPassPage />} />
-        <Route path="/401" element={<UnauthorizedPage />} />
-        <Route path="*" element={<NotFoundPage />} />
+      {/* <Router> */}
+      <Header />
+      <TransitionGroup>
+        <CSSTransition timeout={500} classNames="fade">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/events/:id" element={<EventDetail />} />
+            {/* <Route path="/events" component={AllEventsPage} />  */}
+            <Route path="/events/:id/payment" element={<Payment />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="*" element={<NotFound />} />
+            <Route path="/login-user" element={<LoginUserPage />} />
+            <Route path="/login-promotor" element={<LoginPromotorPage />} />
+            <Route path="/register-user" element={<RegisterUserPage />} />
+            <Route
+              path="/register-promotor"
+              element={<RegisterPromotorPage />}
+            />
+            <Route path="/user-information" element={<UserInformationPage />} />
+            <Route path="/ticket-bookings" element={<UserBookingsPage />} />
+            <Route path="/change-password" element={<ChangePassPage />} />
+            <Route path="/edit-profile" element={<EditProfilePage />} />
+            <Route path="/refferal" element={<RefferalPages />} />
+            <Route path="/input-pass" element={<InputPassPage />} />
+            <Route path="/checkout/:id" element={<CheckOutPage />} />
+            <Route path="/pay/:id" element={<PayPage />} />
+            <Route
+              path="/ticket-bookings/detail/:id"
+              element={<BookingDetailPage />}
+            />
+            <Route path="/forgotpass" element={<ResetPassPage />} />
+            <Route path="/401" element={<UnauthorizedPage />} />
+            <Route path="*" element={<NotFoundPage />} />
 
-        {/* TEMPORARY ROUTING */}
-        <Route path="/event-choose" element={<EventChoose />} />
-        <Route path="/event-detail/:id" element={<EventDetail />} />
-            </Routes>
-          </CSSTransition>
-        </TransitionGroup>
-        <Footer />
-      </Router>
+            {/* TEMPORARY ROUTING */}
+            <Route path="/event-choose" element={<EventChoose />} />
+            <Route path="/event-detail/:id" element={<EventCheckout />} />
+          </Routes>
+        </CSSTransition>
+      </TransitionGroup>
+      <Footer />
+      {/* </Router> */}
     </ErrorBoundary>
   );
 };

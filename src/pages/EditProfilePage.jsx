@@ -1,6 +1,5 @@
 import EditProfile from "../view/EditProfile";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -59,9 +58,7 @@ const EditProfilePage = () => {
   });
   return (
     <div>
-      <Navbar />
-      <EditProfile />
-      <Footer />
+      <EditProfile />\
     </div>
   );
 };
