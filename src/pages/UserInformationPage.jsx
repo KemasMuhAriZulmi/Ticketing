@@ -1,5 +1,5 @@
 import UserInformation from "../view/UserInformation";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Header";
 import UserNavbar from "../components/User-Navbar";
 import { useEffect } from "react";
 import axios from "axios"; // Import axios

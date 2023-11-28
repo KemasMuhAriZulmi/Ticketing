@@ -1,4 +1,3 @@
-// src/pages/Confirmation.jsx
 import React from 'react';
 import Loader from '../components/Loader';
 import ToastNotification from '../components/ToastNotification';
@@ -35,7 +34,6 @@ const Confirmation = () => {
             <ToastNotification message={toastMessage} onClose={() => setShowToast(false)} />
           )}
           <p>Your purchase was successful!</p>
-          {/* Add more confirmation details as needed */}
           <button
             onClick={handleBackToHome}
             className="bg-blue-500 text-white p-2 mt-4 inline-block"

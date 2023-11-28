@@ -1,6 +1,6 @@
 import Refferal from "../view/Refferal.jsx";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";

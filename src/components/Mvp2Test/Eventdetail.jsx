@@ -122,7 +122,7 @@ const EventDetail = () => {
   };
 
   return (
-    <div className="p-4 w-[400px] mx-auto rounded-xl shadow-md">
+    <div className="p-4 w-[400px] mx-auto rounded-xl shadow-md my-[80px]">
       <div>
         <h1 className="font-bold text-[24px] text-[#294A62] my-2">
           Buy Ticket

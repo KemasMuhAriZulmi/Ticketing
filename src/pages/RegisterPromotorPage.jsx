@@ -1,6 +1,6 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Header";
 import RegisterPromotor from "../view/RegisterPromotor";
-import Footer from "../components/Footer";
+import Footer from "../components/Header";
 
 const RegisterPromotorPage = () => {
   return (

@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import axios from "../axios";
 import Loader from "../components/Loader";
@@ -8,7 +7,7 @@ const Dashboard = () => {
   const [totalTicketsSold, setTotalTicketsSold] = useState(0);
   const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState(null);
-  const [filter, setFilter] = useState("all"); // Default filter is 'all'
+  const [filter, setFilter] = useState("all");
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
@@ -16,9 +15,9 @@ const Dashboard = () => {
   const handleEventDeleted = async (eventId) => {
     try {
       // Send a DELETE request to remove the event
-      await axios.delete(`/events/${eventId}`);
+      await axios.delete(`http://localhost:4500/events/${eventId}`);
 
-      // Update the list of events after deletion
+
       setEvents((prevEvents) =>
         prevEvents.filter((event) => event.id !== eventId)
       );
@@ -31,7 +30,7 @@ const Dashboard = () => {
   const handleEventUpdated = async (updatedEvent) => {
     try {
       // Send a PUT request to update the event
-      await axios.put(`/events/${updatedEvent.id}`, updatedEvent);
+      await axios.put(`http://localhost:4500/events/${updatedEvent.id}`, updatedEvent);
 
       // Update the list of events after editing
       setEvents((prevEvents) =>
@@ -76,7 +75,6 @@ const Dashboard = () => {
   }, [filter]);
 
   useEffect(() => {
-    // Add animation for entering the dashboard
     const timer = setTimeout(() => {
       const chartContainer = document.querySelector(".chart-container");
       if (chartContainer) {

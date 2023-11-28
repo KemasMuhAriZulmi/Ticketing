@@ -1,13 +1,11 @@
-// src/pages/Home.jsx
+// Import statements...
 import React, { useState, useEffect } from 'react';
 import axios from '../axios';
 import EventCard from '../Components/EventCard';
 import ToastNotification from '../components/ToastNotification';
-// import '../styles.css';
 
 const Home = ({ title }) => {
   const [events, setEvents] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [eventsPerPage] = useState(6);
   const [toastMessage, setToastMessage] = useState('');
@@ -17,7 +15,7 @@ const Home = ({ title }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('/events')
+    axios.get('http://localhost:4500/events')
       .then(response => {
         setEvents(response.data);
         const today = new Date();
@@ -31,13 +29,9 @@ const Home = ({ title }) => {
       });
   }, []);
 
-  const filteredEvents = events.filter(event =>
-    event.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const indexOfLastEvent = currentPage * eventsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-  const currentEvents = filteredEvents.slice(indexOfFirstEvent, indexOfLastEvent);
+  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -57,45 +51,45 @@ const Home = ({ title }) => {
 
       {!loading && !error && (
         <div>
-          <div className="slideshow-container relative overflow-hidden">
+          <div className="slideshow-container relative overflow-hidden mb-8">
             {upcomingEvents.map(event => (
               <div key={event.id} className="mySlides">
                 <img src={event.image} alt={event.title} className="w-full" />
-                <div className="text">{event.title}</div>
-                <p className="text-sm">{event.description}</p>
+                <div className="text text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <h2 className="text-3xl font-bold mb-2">{event.title}</h2>
+                  <p className="text-sm">{event.description}</p>
+                </div>
               </div>
             ))}
           </div>
 
-          <h1 className="text-2xl font-bold mb-4">{title}</h1>
-
-          <input
-            type="text"
-            placeholder="Search events..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border p-2 mb-4 w-full md:w-1/2 lg:w-1/3" 
-          />
+          <h1 className="text-3xl font-bold mb-4">{title}</h1>
 
           {showToast && <ToastNotification message={toastMessage} onClose={() => setShowToast(false)} />}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {currentEvents.map(({ id, title, date, location, image }) => (
-              <EventCard
-                key={id}
-                event={{ id, title, date, location, image }}
-                onPurchase={() => showToastNotification(`You purchased a ticket for ${title}`)}
-              />
+              <div key={id} className="event-card bg-white p-4 rounded-lg shadow-md">
+                <img src={image} alt={title} className="w-full h-32 object-cover mb-4 rounded-md" />
+                <h3 className="text-xl font-bold mb-2">{title}</h3>
+                <p className="text-gray-600">{date} - {location}</p>
+                <button
+                  className="mt-2 bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none"
+                  onClick={() => showToastNotification(`You purchased a ticket for ${title}`)}
+                >
+                  Purchase Tickets
+                </button>
+              </div>
             ))}
           </div>
 
           <div className="category-menu mt-8">
             <h2 className="text-xl font-bold mb-2">Discover Events by Category</h2>
-            <ul className="list-none p-0 m-0 flex space-x-4">
-              <li><a href="/category/music" className="text-blue-500">Music</a></li>
-              <li><a href="/category/sports" className="text-blue-500">Sports</a></li>
-              <li><a href="/category/arts" className="text-blue-500">Arts</a></li>
-            </ul>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <CategoryCard title="Music" link="/category/music" />
+              <CategoryCard title="Sports" link="/category/sports" />
+              <CategoryCard title="Arts" link="/category/arts" />
+            </div>
           </div>
 
           <div className="purchase-guide mt-8">
@@ -114,7 +108,7 @@ const Home = ({ title }) => {
           </div>
 
           <div className="flex justify-center mt-4">
-            {[...Array(Math.ceil(filteredEvents.length / eventsPerPage)).keys()].map(number => (
+            {[...Array(Math.ceil(events.length / eventsPerPage)).keys()].map(number => (
               <button
                 key={number + 1}
                 onClick={() => paginate(number + 1)}
@@ -129,5 +123,12 @@ const Home = ({ title }) => {
     </div>
   );
 };
+
+const CategoryCard = ({ title, link }) => (
+  <div className="category-card bg-white p-4 rounded-lg shadow-md">
+    <h3 className="text-xl font-bold mb-2">{title}</h3>
+    <a href={link} className="text-blue-500">Explore Events</a>
+  </div>
+);
 
 export default Home;

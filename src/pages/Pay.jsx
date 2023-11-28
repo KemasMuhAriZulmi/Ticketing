@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Header";
 import Footer from "../components/Footer";
 import Pay from "../view/Pay";
 import { useEffect } from "react";

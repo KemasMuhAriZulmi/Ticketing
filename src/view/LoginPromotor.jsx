@@ -26,7 +26,7 @@ const LoginPromotor = () => {
         console.log("Response:", response.data.result);
         console.log(typeof response.data.token);
         localStorage.setItem("login", response.data.token);
-        navigate("/user-information");
+        navigate("/dashboard");
       } else {
         setError("Account not found");
       }

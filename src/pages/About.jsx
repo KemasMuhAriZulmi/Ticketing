@@ -16,9 +16,9 @@ const About = () => {
       </p>
       <h2 className="text-xl font-bold mt-4 mb-2">Our Team</h2>
       <ul>
-        <li>Kemas Muh Ari ZUlmy</li>
+        <li>Kemas Muh Ari Zulmy</li>
         <li>Gibran Raka Buming Raka</li>
-        {/* Add more team members as needed */}
+        <li>Muhammad Sulthan Mahendra</li>
       </ul>
     </div>
   );

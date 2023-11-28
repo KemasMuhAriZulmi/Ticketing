@@ -4,7 +4,7 @@ import React from "react";
 const Toast = (props) => {
   const { type, message, onClose } = props;
 
-  const toastClasses = `fixed bottom-0 right-0 m-4 p-4 rounded ${
+  const toastClasses = `fixed bottom-0 right-0 m-4 p-4 rounded z-50 ${
     type === "success" ? "bg-green-500" : type === "error" ? "bg-red-500" : ""
   }`;
 

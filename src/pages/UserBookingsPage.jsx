@@ -1,5 +1,5 @@
 import UserBookings from "../view/UserBookings";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Header";
 import UserNavbar from "../components/User-Navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
